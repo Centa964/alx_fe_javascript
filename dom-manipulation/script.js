@@ -152,6 +152,41 @@ let quotes = JSON.parse(localStorage.getItem('quotes')) || [
     fileReader.readAsText(file);
   }
   
+  // Function to fetch quotes from the server
+  async function fetchQuotesFromServer() {
+    try {
+      const response = await fetch('https://jsonplaceholder.typicode.com/posts');
+      const serverQuotes = await response.json();
+  
+      // Simulate server quotes by mapping them to our format
+      const formattedQuotes = serverQuotes.map(post => ({
+        text: post.title,
+        category: 'Server', // Default category for server quotes
+      }));
+  
+      // Merge server quotes with local quotes (server takes precedence)
+      const mergedQuotes = [...formattedQuotes, ...quotes];
+      const uniqueQuotes = [...new Map(mergedQuotes.map(quote => [quote.text, quote])).values()];
+  
+      // Update local quotes
+      quotes = uniqueQuotes;
+      saveQuotes();
+  
+      // Notify the user
+      showNotification('Quotes synced with the server.');
+    } catch (error) {
+      showNotification('Failed to fetch quotes from the server.', true);
+    }
+  }
+  
+  // Function to show notifications
+  function showNotification(message, isError = false) {
+    const notification = document.getElementById('notification');
+    notification.textContent = message;
+    notification.style.backgroundColor = isError ? '#ffebee' : '#e0f7fa';
+    notification.style.borderColor = isError ? '#ffcdd2' : '#b2ebf2';
+  }
+  
   // Add event listener to the "Show New Quote" button
   document.getElementById('newQuote').addEventListener('click', showRandomQuote);
   
@@ -163,3 +198,6 @@ let quotes = JSON.parse(localStorage.getItem('quotes')) || [
   
   // Display quotes when the page loads
   showRandomQuote();
+  
+  // Fetch quotes from the server every 10 seconds
+  setInterval(fetchQuotesFromServer, 10000);
