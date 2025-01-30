@@ -155,9 +155,10 @@ let quotes = JSON.parse(localStorage.getItem('quotes')) || [
     fileReader.readAsText(file);
   }
   
-  // Function to fetch quotes from the server
-  async function fetchQuotesFromServer() {
+  // Function to sync quotes with the server
+  async function syncQuotes() {
     try {
+      // Fetch quotes from the server
       const response = await fetch('https://jsonplaceholder.typicode.com/posts');
       const serverQuotes = await response.json();
   
@@ -178,7 +179,7 @@ let quotes = JSON.parse(localStorage.getItem('quotes')) || [
       // Notify the user
       showNotification('Quotes synced with the server.');
     } catch (error) {
-      showNotification('Failed to fetch quotes from the server.', true);
+      showNotification('Failed to sync quotes with the server.', true);
     }
   }
   
@@ -224,5 +225,5 @@ let quotes = JSON.parse(localStorage.getItem('quotes')) || [
   // Display quotes when the page loads
   showRandomQuote();
   
-  // Fetch quotes from the server every 10 seconds
-  setInterval(fetchQuotesFromServer, 10000);
+  // Sync quotes with the server every 10 seconds
+  setInterval(syncQuotes, 10000);
