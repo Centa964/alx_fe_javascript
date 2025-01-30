@@ -56,6 +56,9 @@ let quotes = JSON.parse(localStorage.getItem('quotes')) || [
   
       // Update categories dropdown
       populateCategories();
+  
+      // Sync the new quote with the server
+      syncQuoteToServer(newQuote);
     } else {
       alert('Please fill out both fields.');
     }
@@ -176,6 +179,28 @@ let quotes = JSON.parse(localStorage.getItem('quotes')) || [
       showNotification('Quotes synced with the server.');
     } catch (error) {
       showNotification('Failed to fetch quotes from the server.', true);
+    }
+  }
+  
+  // Function to sync a new quote to the server
+  async function syncQuoteToServer(quote) {
+    try {
+      const response = await fetch('https://jsonplaceholder.typicode.com/posts', {
+        method: 'POST', // Specify the HTTP method
+        headers: {
+          'Content-Type': 'application/json', // Set the content type
+        },
+        body: JSON.stringify(quote), // Convert the quote object to a JSON string
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to sync quote with the server.');
+      }
+  
+      const data = await response.json();
+      showNotification('Quote synced with the server.');
+    } catch (error) {
+      showNotification('Failed to sync quote with the server.', true);
     }
   }
   
