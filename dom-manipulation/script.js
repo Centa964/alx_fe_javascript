@@ -17,8 +17,20 @@ let quotes = [
     `;
   }
   
-  // Add event listener to the "Show New Quote" button
-  document.getElementById('newQuote').addEventListener('click', showRandomQuote);
+  // Function to create the "Add Quote" form dynamically
+  function createAddQuoteForm() {
+    const formContainer = document.getElementById('formContainer');
+  
+    const form = document.createElement('div');
+    form.innerHTML = `
+      <h2>Add a New Quote</h2>
+      <input id="newQuoteText" type="text" placeholder="Enter a new quote" />
+      <input id="newQuoteCategory" type="text" placeholder="Enter quote category" />
+      <button onclick="addQuote()">Add Quote</button>
+    `;
+  
+    formContainer.appendChild(form);
+  }
   
   // Function to add a new quote
   function addQuote() {
@@ -39,3 +51,9 @@ let quotes = [
       alert('Please fill out both fields.');
     }
   }
+  
+  // Add event listener to the "Show New Quote" button
+  document.getElementById('newQuote').addEventListener('click', showRandomQuote);
+  
+  // Call the function to create the form when the page loads
+  createAddQuoteForm();
