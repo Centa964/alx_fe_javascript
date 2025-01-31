@@ -177,7 +177,7 @@ async function syncQuotes() {
     saveQuotes();
 
     // Notify the user
-    showNotification('Quotes synced with the server.');
+    showNotification('Quotes synced with server!');
   } catch (error) {
     showNotification('Failed to sync quotes with the server.', true);
   }
@@ -204,7 +204,7 @@ async function fetchQuotesFromServer() {
     saveQuotes();
 
     // Notify the user
-    showNotification('Quotes synced with the server.');
+    showNotification('Quotes synced with server!');
   } catch (error) {
     showNotification('Failed to fetch quotes from the server.', true);
   }
